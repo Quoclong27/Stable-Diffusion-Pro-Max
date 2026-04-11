@@ -1,0 +1,17 @@
+services:
+  app:
+    build: .
+    ports:
+      - "${PORT:-7860}:7860"
+    environment:
+      MODEL_PHASE_1: ${MODEL_PHASE_1:-model/phase_1/final.pth}
+      MODEL_PHASE_2: ${MODEL_PHASE_2:-model/phase_2/final_with_tonenet.pth}
+      MAX_IMAGE_SIZE: ${MAX_IMAGE_SIZE:-3840}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped

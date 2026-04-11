@@ -1,0 +1,18 @@
+python /home/diffusion/Long/outpainting/src/inference_preserve_blend_v2.py \
+  --base_model SG161222/RealVisXL_V5.0_Lightning \
+  --controlnet_config /home/diffusion/Long/outpainting/src/config_promax.json \
+  --controlnet_weights /home/diffusion/Long/outpainting/src/diffusion_pytorch_model_promax.safetensors \
+  --lora_path /home/diffusion/Long/outpainting/outputs/checkpoints_controlnet_fill/lora_best \
+  --input_image /home/diffusion/Long/test/image_test/0003.jpg \
+  --output_image /home/diffusion/Long/outpainting/outputs/inference/result_v3.png \
+  --debug_dir /home/diffusion/Long/outpainting/outputs/inference/debug_v3 \
+  --prompt "Seamless photorealistic outpainting of the same modern rooftop terrace at blue hour, preserving the exact existing design and atmosphere. Extend the wooden deck, white stone planters, olive trees, warm built-in ambient lighting, minimalist outdoor lounge furniture, glass railing, and distant urban skyline naturally beyond the current frame. Keep the same architecture, same materials, same lighting direction, same dusk sky, same perspective, same clean luxury aesthetic, and the same realistic proportions. The newly generated areas must look like a natural continuation of the original rooftop space, with consistent shadows, reflections, textures, and depth." \
+  --alignment Middle \
+  --overlap_percentage 10 \
+  --overlap_left --overlap_right --overlap_top --overlap_bottom \
+  --blend_radius 24 \
+  --color_match_strength 0.6 \
+  --steps 10 \
+  --guidance_scale 2.5 \
+  --controlnet_scale 1.0 \
+  --seed 1234
