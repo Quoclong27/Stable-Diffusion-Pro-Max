@@ -7,9 +7,15 @@ einops==0.8.1
 tqdm==4.66.1
 Pillow>=10.0
 pyyaml>=6.0
+# Task 3 - Inpainting pipeline
+Pillow>=10.0.0
+sentencepiece
 # Task 3 — Outpainting pipeline
 diffusers>=0.28.0
 transformers>=4.40.0
 accelerate>=0.30.0
 safetensors>=0.4.0
-peft>=0.10.0
+peft>=0.14.0
+fastapi>=0.103.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6

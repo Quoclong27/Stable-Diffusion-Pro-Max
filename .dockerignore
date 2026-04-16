@@ -1,0 +1,17 @@
+# Git
+.git
+.gitignore
+
+# Model weights — mount qua volume, không bake vào image
+task3/diffusion_pytorch_model_promax.safetensors
+task3/lora_best/
+
+# Python cache
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+
+# Docker files
+.dockerignore
+docker-compose*.yml

@@ -173,6 +173,8 @@ def prepare_image_and_mask(
     preserve_rect = (left_overlap, top_overlap, right_overlap, bottom_overlap)
     mask_draw.rectangle([(left_overlap, top_overlap), (right_overlap, bottom_overlap)], fill=0)
 
+    # cnet_image: must match training exactly.
+    # Training uses app_mask to black out both overlap AND outer canvas.
     cnet_image = background.copy()
     cnet_image.paste(0, (0, 0), app_mask)
 
@@ -395,7 +397,7 @@ def main():
             raise RuntimeError("peft is not installed but --lora_path was provided.")
         print(f"Loading LoRA from {args.lora_path}...")
         pipe.unet = PeftModel.from_pretrained(pipe.unet, args.lora_path)
-        pipe.unet.to(args.device)
+        pipe.unet.to(device=args.device, dtype=dtype)
 
     debug_dir = Path(args.debug_dir) if args.debug_dir else None
 

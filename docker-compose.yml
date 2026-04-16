@@ -4,14 +4,28 @@ services:
     ports:
       - "${PORT:-7860}:7860"
     environment:
-      MODEL_PHASE_1: ${MODEL_PHASE_1:-model/phase_1/final.pth}
-      MODEL_PHASE_2: ${MODEL_PHASE_2:-model/phase_2/final_with_tonenet.pth}
-      MAX_IMAGE_SIZE: ${MAX_IMAGE_SIZE:-3840}
+      MODEL_PHASE_1: ${MODEL_PHASE_1:-task1/model/phase_1/final.pth}
+      MODEL_PHASE_2: ${MODEL_PHASE_2:-task1/model/phase_2/final_with_tonenet.pth}
+      # Task 2 — SDXL Inpainting
+      T2_DEVICE: ${T2_DEVICE:-cuda:0}
+      # Task 3 model paths (trỏ vào /models mount bên dưới)
+      T3_CONTROLNET_WEIGHTS: /models/diffusion_pytorch_model_promax.safetensors
+      T3_LORA_PATH: /models/lora_best
+      # Tắt meta-device init trong transformers — tránh "Cannot copy out of meta tensor"
+      TRANSFORMERS_NO_EMPTY_INIT: "1"
+    volumes:
+      # Mount code từ host → container, sửa code chỉ cần restart không cần build
+      - .:/app
+      # Mount model weights từ host vào container (tránh bake vào image)
+      - ./task3/diffusion_pytorch_model_promax.safetensors:/models/diffusion_pytorch_model_promax.safetensors:ro
+      - ./task3/lora_best:/models/lora_best:ro
+      # HuggingFace cache để không tải lại mỗi lần restart
+      - ${HF_CACHE:-/home/diffusion/.cache/huggingface}:/root/.cache/huggingface
     deploy:
       resources:
         reservations:
           devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
+          - driver: nvidia
+            device_ids: ['0']
+            capabilities: [gpu]
     restart: unless-stopped
